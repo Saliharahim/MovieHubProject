@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator,MaxValueValidator
 
 # Create your models here.
 
@@ -27,6 +28,21 @@ class Movies(models.Model):
     poster_image=models.ImageField(upload_to="images",null=True,blank=True)
     description=models.CharField(max_length=200,null=True)
 
+    @property
+    def genre_names(self):
+        return self.genres.all()
+
+    @property            
+    def reviews(self): 
+        return Reviews.objects.filter(movie=self)    # in movies model we dont have any attribut to connect reviews.so the orm query is Reviews. objects and not self.
+
+    @property
+    def avg_rating(self):
+        ratings=Reviews.objects.filter(movie=self).values_list("rating",flat=True)
+        if ratings:
+            return sum(ratings)/len(ratings)
+        else:
+            return 0
 
     def __str__(self):
         return self.name
@@ -35,7 +51,7 @@ class Reviews(models.Model):
     movie=models.ForeignKey(Movies,on_delete=models.CASCADE)
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     comment=models.CharField(max_length=200)
-    rating=models.PositiveIntegerField()
+    rating=models.PositiveIntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)])
     
 
 

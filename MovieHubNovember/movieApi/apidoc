@@ -1,0 +1,42 @@
+1. register
+=============
+localhost:8000/api/register/
+method:post
+data=username,email,pw
+2. Token
+==========
+url:localhost:8000/api/token/
+method:post
+data=username,password
+3. Movie list
+==============
+localhost:8000/api/movies/
+method:get
+authentication-Token
+4. Movie detail
+===============
+localhost:8000/api/movies/<id>/
+method:get
+authentication:Token
+5. Add review
+===============
+localhost:8000/api/movies/<id>/add_review/
+method:post
+
+data:{comment,rating}
+authentication:Token 
+
+6. edit review
+=================
+localhost:8000/api/reviews/{id}/
+method:delete
+ABC user
+
+7.delete
+=========
+
+
+permissions{isAuthenticated,IsadminUser,AllowAny..}custom permission
+
+
+
